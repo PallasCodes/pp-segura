@@ -5,11 +5,11 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 td {
-  padding: 6px 16px;
+  padding: 6px 16px 6px 0;
   text-align: start;
 }
 
@@ -93,7 +93,7 @@ button {
 }
 
 .form label {
-  display: block
+  display: block;
 }
 
 .form input {
@@ -110,7 +110,7 @@ button {
 
 th {
   text-align: start;
-  padding: 5px 12px;
+  padding: 5px 24px 5px 0;
 }
 
 #btnLogout {
@@ -162,4 +162,64 @@ fieldset {
 fieldset legend {
   font-weight: 600;
   display: block;
+}
+
+#notifications-wrapper {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 9;
+}
+
+#notifications-list {
+  list-style-type: none;
+  padding-bottom: 12px;
+  padding-right: 12px;
+}
+
+.notification {
+  padding: 14px 20px;
+  border-radius: 4px;
+  color: #f1f1f1;
+  font-weight: 500;
+  position: relative;
+}
+
+.notification.success {
+  background-color: rgb(40, 167, 69);
+}
+
+.notification.error {
+  background-color: rgb(220, 53, 69);
+}
+
+.close-notification {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  color: #f1f1f1;
+  font-weight: 600;
+  font-size: 11px;
+}
+
+/* input:invalid {
+  border-color: rgb(220, 53, 69);
+} */
+
+input[aria-invalid="true"] {
+  border-color: rgb(220, 53, 69);
+}
+
+.errorlist {
+  list-style-type: none;
+  margin-bottom: 5px;
+  margin-top: 1px;
+}
+
+.errorlist li {
+  font-size: 14px;
+  color: #444;
 }

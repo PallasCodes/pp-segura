@@ -34,8 +34,9 @@ def login_view(request):
                 
                 return redirect('telegram_auth')
             else:
-                pass
+                messages.error('Ocurrió un error al enviar el token. Inténtalo más tarde')
+                return render(request, "registration/login.html")
         else:
-            messages.error(request, "Username or Password does not match...")
+            messages.error(request, "El usuario o la contraseña no coinciden...")
             
     return render(request, "registration/login.html")

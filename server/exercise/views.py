@@ -3,6 +3,7 @@ from django.http import Http404
 from django.contrib.auth.decorators import login_required
 import uuid
 from datetime import date, datetime
+from django.contrib import messages
 
 from student.models import Student
 from .models import Exercise, HomeWork
@@ -34,9 +35,11 @@ def register_exercise(request):
     
     if form.is_valid():
       form.save()
+      messages.success(request, 'Ejercicio registrado correctamente')
       return redirect('exercises_list')
+    
     else:
-      return Http404()
+      return render(request, 'register-exercise.html', { 'form': form })
     
   else:
     return Http404()
@@ -71,6 +74,7 @@ def register_homework(request):
       result = evaluar(homework.code.path, exercise.cases.path)
       homework.score = result.count(True)
       homework.save()
+      messages.success(request, 'Tú tarea ha sido entregada')
     
     return redirect('exercise_detail', id=exercise.id)
     
@@ -84,5 +88,6 @@ def register_homework(request):
 def delete_exercise(request, id):
    exercise = get_object_or_404(Exercise, pk=id)
    exercise.delete()
+   messages.success(request, 'Ejercicio eliminado correctamente')
    
    return redirect('exercises_list')

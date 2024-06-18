@@ -8,14 +8,25 @@ from .models import Student
 from utils.decorators.user_is_professor import user_is_professor
 from telegram.models import UserTelegram
 from utils.decorators.requires_telegram_auth import requires_telegram_auth
+from telegram.forms import UserTelegramForm
 
 
 def register_student(request):
   if request.method == 'GET':
-    return render(request, 'register-student.html', { 'student_form': StudentForm, 'user_form': UserForm })
+    context = { 
+                'forms': [
+                  UserForm,
+                  UserTelegramForm,
+                  StudentForm, 
+                ]
+              }
+    
+    return render(request, 'register-student.html', context)
   
   elif request.method == 'POST':
     student_form = StudentForm(request.POST)
+    user_form = UserForm(request.POST)
+    user_telegram_form = UserTelegramForm(request.POST)
     
     if student_form.is_valid():
       user = User.objects.create_user(
@@ -33,7 +44,15 @@ def register_student(request):
       return redirect('login')
 
     else:
-      return redirect('register_student')
+      context = {
+        'forms': [
+          user_form,
+          user_telegram_form,
+          student_form, 
+        ]
+      }
+      
+      return render(request, 'register-student.html', context)
   
   else:
     return Http404()
