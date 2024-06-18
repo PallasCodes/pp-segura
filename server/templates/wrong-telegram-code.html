@@ -1,0 +1,6 @@
+{% extends './base.html' %}
+
+{% block body %}
+  <h2>El código es incorrecto o ha caducado</h2>
+  <a href="{% url 'telegram_auth' %}">Volver a intentar</a>
+{% endblock %}

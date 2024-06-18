@@ -1,0 +1,20 @@
+{% extends './base.html' %}
+
+{% block body %}
+  <h2>Alumnos</h2>
+  <br>
+  <table>
+    <tr>
+      <th>NOMBRE</th>
+      <th>MATRÍCULA</th>
+      <th>USUARIO</th>
+    </tr>
+    {% for student in students %}
+      <tr>
+        <td>{{ student.full_name }}</td>
+        <td>{{ student.registration_number }}</td>
+        <td>{{ student.user.username }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends './base.html' %}
+
+{% block body %}
+  <h1 class="text-center" style="margin-top: 10vh;">Registrarme</h1>
+  <form action="{% url 'register_student' %}" method="POST" class="custom-form" style="margin-top: 32px;">{% csrf_token %}
+    {{ user_form }}
+    <label for="chat_id">Telegram chat ID</label>
+    <input type="text" name="chat_id" required>
+    {{ student_form }}
+    <button type="submit" style="margin-top: 16px">Registrarme</button>
+  </form>
+
+  <p style="text-align: center; margin-top: 24px;">
+      <a href="{% url 'login' %}" style="text-decoration: none; font-weight: 500;">Iniciar sesión</a>
+    </p>
+{% endblock %}

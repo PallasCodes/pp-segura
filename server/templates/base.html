@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+  {% if request.user.is_authenticated and request.session.telegram_auth %}
+    <nav id="navbar">
+      <ul>
+        <li>
+          <a href="{% url 'exercises_list' %}">Ejercicios</a>
+        </li>
+      
+        {% if request.session.is_professor %}
+          <li>
+            <a href="{% url 'register_exercise' %}">Registrar ejercicio</a>
+          </li>
+          <li>
+            <a href="{% url 'students_list' %}">Alumnos</a>
+          </li>
+        {% endif %}
+
+        <li>
+          <form action="{% url 'logout' %}" method="POST">{% csrf_token %}
+            <button type="submit" id="btnLogout">
+              Cerrar sessión
+            </button>
+          </form>
+        </li>
+      </ul>
+    </nav>
+  {% endif %}
+
+  <section id="content" style="padding: 0 20px;"> 
+    {% block body %}
+    {% endblock %}
+  </section>
+</body>
+</html>

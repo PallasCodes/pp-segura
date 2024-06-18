@@ -1,0 +1,10 @@
+{% extends './base.html' %}
+
+{% block body %}
+  <h2>Registrar ejercicio</h2>
+  <br>
+  <form action="{% url 'register_exercise' %}" method="POST" enctype="multipart/form-data" class="form">{% csrf_token %}
+    {{ form }}
+    <button type="submit">Registrar</button>
+  </form>
+{% endblock %}

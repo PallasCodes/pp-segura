@@ -1,0 +1,43 @@
+{% extends './base.html' %}
+
+{% block body %}
+  <h2>Ejercicios</h2>
+  <br>
+  {% if request.session.is_professor %}
+    <table>
+      <tr>
+        <th></th>
+        <th>EJERCICIO</th>
+        <th>FECHA INICIO</th>
+        <th>FECHA CIERRE</th>
+      </tr>
+      {% for exercise in exercises %}
+        <tr>
+          <td>
+            <form action="{% url 'delete_exercise' id=exercise.id %}" method="DELETE">{% csrf_token %}
+              <button type="submit">Eliminar</button>
+            </form>
+          </td>
+          <td><a href="{% url 'exercise_detail' id=exercise.id %}" style="text-decoration: none; font-weight: 500;">{{ exercise.name }}</a></td>
+          <td>{{ exercise.start_date }}</td>
+          <td>{{ exercise.end_date }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <table>
+      <tr>
+        <th>EJERCICIO</th>
+        <th>FECHA INICIO</th>
+        <th>FECHA CIERRE</th>
+      </tr>
+      {% for exercise in exercises %}
+        <tr>
+          <td><a href="{% url 'exercise_detail' id=exercise.id %}" style="text-decoration: none; font-weight: 500;">{{ exercise.name }}</a></td>
+          <td>{{ exercise.start_date }}</td>
+          <td>{{ exercise.end_date }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+{% endblock %}

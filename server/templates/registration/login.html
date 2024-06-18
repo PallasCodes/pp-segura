@@ -1,0 +1,37 @@
+{% extends '../base.html' %}
+
+{% block body %}
+  {% if form.errors %}
+      <p>Your username and password didn't match. Please try again.</p>
+    {% endif %}
+
+    {% if next %}
+      {% if user.is_authenticated %}
+        <p>Your account doesn't have access to this page. To proceed,
+        please login with an account that has access.</p>
+      {% else %}
+        <p>Please login to see this page.</p>
+      {% endif %}
+    {% endif %}
+
+    <h1 style="text-align: center; margin-top: 20vh">Iniciar Sesión</h1>
+
+    <form method="POST" action="{% url 'login' %}" class="custom-form" style="margin-top: 36px;">
+      {% csrf_token %}
+      <label for="username">
+        Nombre de usuario:
+        <input type="text" id="username" name="username" required>
+      </label>
+      <label for="password">
+        Contraseña
+        <input type="password" id="password" name="password" required>
+      </label>
+      
+      <input type="hidden" name="next" value="{{ next }}">
+      <button type="submit" style="margin-top: 16px;">Iniciar sesión</button>
+    </form>
+
+    <p style="text-align: center; margin-top: 24px;">
+      <a href="{% url 'register_student' %}" style="text-decoration: none; font-weight: 500;">Registrarme</a>
+    </p>
+{% endblock %}

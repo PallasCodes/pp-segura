@@ -1,0 +1,4 @@
+server/db.sqlite3
+server/media
+db
+venv

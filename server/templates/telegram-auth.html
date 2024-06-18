@@ -1,0 +1,14 @@
+{% extends './base.html' %}
+
+{% block body %}
+  <h1 class="text-center" style="margin-top: 20vh">Validación</h1>
+  <p class="text-center" style="margin: 16px 0">Ingresa el código que se te envío por Telegram</p>
+  <form method="POST" class="custom-form" style="margin-top: 32px">{% csrf_token %}
+    <input type="text" name="code">
+    <button type="submit" style="margin-top: 14px">Enviar</button>
+  </form>
+
+   <p style="text-align: center; margin-top: 24px;">
+      <a href="{% url 'login' %}" style="text-decoration: none; font-weight: 500;">Volver a iniciar sesión</a>
+    </p>
+{% endblock %}

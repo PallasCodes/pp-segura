@@ -1,0 +1,83 @@
+{% extends './base.html' %}
+
+{% block body %}
+  <h2>{{ exercise.name }}</h2>
+  <p>{{ exercise.description }}</p>
+  <br>
+  
+  <div>
+    <span class="readonly-label">Salida de ejemplo</span>
+    <span class="readonly-text">{{ exercise.input_description }}</span>
+  </div>
+
+  <div>
+    <span class="readonly-label">Entrada de ejemplo</span>
+    <span class="readonly-text">{{ exercise.output_description }}</span>
+  </div>
+
+  {% if request.session.is_professor %}
+    <div>
+      <span class="readonly-label">Casos a evaluar</span>
+      <span class="readonly-text"><a href="/media/cases/{{ exercise.get_cases_file_name }}" style="text-decoration: none;" target="_blank">{{ exercise.get_cases_file_name }}</a></span>
+    </div>
+  {% endif %}
+
+  <div>
+    <span class="readonly-label">Fecha de inicio</span>
+    <span class="readonly-text">{{ exercise.start_date }}</span>
+  </div>
+
+  <div>
+    <span class="readonly-label">Fecha de cierre</span>
+    <span class="readonly-text">{{ exercise.end_date }}</span>
+  </div>
+
+  <br>
+
+  {% if request.session.is_professor %}
+    <h3>Entregas</h3>
+    <table style="margin-top: 10px">
+      <tr>
+        <th>ALUMNO</th>
+        <th>FECHA DE SUBIDA</th>
+        <th>PUNTOS OBTENIDOS</th>
+        <th>CÓDIGO</th>
+      </tr>
+      {% for homework in homeworks %}
+        <tr>
+          <td>{{ homework.student.full_name }}</td>  
+          <td>{{ homework.date }}</td> 
+          <td>{{ homework.score }}/{{exercise.num_cases}}</td>
+          <td>
+            <a href="/media/code/{{ homework.get_homework_file_name }}" style="text-decoration: none;" target="_blank">
+              {{homework.get_homework_file_name }}
+            </a>
+          </td>
+        <tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    {% if homework is None %}
+      {% if exercise.end_date < today %}
+        <h4>La fecha de entrega ha terminado.</h4>
+      {% else %}
+        <form action="{% url 'register_homework' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+          <label for="file">Archivo</label>
+          <input type="file" id="file" name="file" accept=".py">
+          <br>
+          <input type="hidden" id="exercise" name="exercise" value="{{ exercise.id }}">
+          <button type="submit">Subir archivo</button>
+        </form>
+      {% endif %}
+    {% else %}
+      <div>
+        <span class="readonly-label">Calificación</span>
+        <span class="readonly-text">{{ homework.score }}</span>
+      </div>
+       <div>
+        <span class="readonly-label">Fecha de entrega</span>
+        <span class="readonly-text">{{ homework.date }}</span>
+      </div>
+    {% endif %}
+  {% endif %}
+{% endblock %}
