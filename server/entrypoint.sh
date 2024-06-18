@@ -1,19 +1,11 @@
 #!/bin/sh
 
-if [ "$DATABASE" = "postgres" ]
-then
-    echo "Waiting for postgres..."
+echo 'Running collecstatic...'
+python manage.py collectstatic --no-input --settings=server.settings
 
-    while ! nc -z $SQL_HOST $SQL_PORT; do
-      sleep 0.1
-    done
+echo 'Applying migrations...'
+python manage.py wait_for_db --settings=server.settings
+python manage.py migrate --settings=server.settings
 
-    echo "PostgreSQL started"
-fi
-
-python manage.py flush --no-input
-python manage.py makemigrations
-python manage.py migrate
-python manage.py runserver
-
-exec "$@"
+echo 'Running server...'
+gunicorn --env DJANGO_SETTINGS_MODULE=server.settings server.wsgi:application --bind 0.0.0.0:$PORT

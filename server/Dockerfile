@@ -1,28 +1,17 @@
-# syntax=docker/dockerfile:1
-FROM python:3.11.4-slim-buster
+FROM python:3.10.4-alpine3.15
 
-# set work directory
-WORKDIR /usr/src/server
+ENV PYTHONUNBUFFERED=1
 
-# set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+WORKDIR /app
 
-# install system dependencies
-RUN apt-get update && apt-get install -y netcat
+RUN  apk update \
+	&& apk add --no-cache gcc musl-dev postgresql-dev python3-dev libffi-dev \
+	&& pip install --upgrade pip
 
-# install dependencies
-RUN pip install --upgrade pip
-COPY ./requirements.txt .
+COPY ./requirements.txt ./
+
 RUN pip install -r requirements.txt
 
-# copy entrypoint.sh
-COPY ./entrypoint.sh .
-RUN sed -i 's/\r$//g' /usr/src/server/entrypoint.sh
-RUN chmod +x /usr/src/server/entrypoint.sh
+COPY ./ ./
 
-# copy project
-COPY . .
-
-# run entrypoint.sh
-ENTRYPOINT ["/usr/src/server/entrypoint.sh"]
+CMD ["sh", "entrypoint.sh"]
