@@ -1,17 +1,12 @@
-FROM python:3.10.4-alpine3.15
+FROM python
+
+WORKDIR /server
 
 ENV PYTHONUNBUFFERED=1
+RUN pip install --upgrade pip
 
-WORKDIR /app
-
-RUN  apk update \
-	&& apk add --no-cache gcc musl-dev postgresql-dev python3-dev libffi-dev \
-	&& pip install --upgrade pip
-
-COPY ./requirements.txt ./
+COPY ./requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY ./ ./
-
-CMD ["sh", "entrypoint.sh"]
+COPY . .
