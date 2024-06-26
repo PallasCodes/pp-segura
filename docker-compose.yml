@@ -9,29 +9,40 @@ services:
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
-    expose:
-      - 8000
     env_file:
       - ./.env
     depends_on:
       - db
+    networks:
+      - docker-compose_ppsegura_net
   db:
     image: postgres:15
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env.db
+    networks:
+      - docker-compose_ppsegura_net
   nginx:
-    build: ./nginx
+    image: nginx:stable-bullseye
+    restart: always
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/certs:/etc/nginx/certs
     ports:
-      - 1337:80
+      - 443:443
     depends_on:
       - web
+    networks:
+        - docker-compose_ppsegura_net
 
 volumes:
   postgres_data:
   static_volume:
   media_volume:
+
+networks:
+  docker-compose_ppsegura_net:
+    driver: bridge

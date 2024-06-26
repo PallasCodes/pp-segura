@@ -15,9 +15,11 @@ DEBUG = bool(os.environ.get("DEBUG", default=0))
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:1337"]
+CSRF_TRUSTED_ORIGINS=['https://127.0.0.1']
 
-# CSRF_TRUSTED_ORIGINS = ["http://localhost:1337"]
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "Strict"
+CSRF_COOKIE_HTTPONLY = True
 
 
 
@@ -131,3 +133,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 LOGIN_REDIRECT_URL = '/exercises/'
+
+SESSION_COOKIE_AGE = 3600 
+SESSION_COOKIE_HTTPONLY = True
+
+SESSION_COOKIE_DOMAIN = None
+
+SESSION_COOKIE_SAMESITE = "Strict"
+
+SESSION_COOKIE_SECURE = True
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
